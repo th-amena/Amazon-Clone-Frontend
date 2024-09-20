@@ -2,3 +2,30 @@
   margin: 0;
   padding: 0;
 }
+
+
+/* console.log(productId);
+   if (isLoading) {
+    return (
+      <LayOut>
+        <Loader /> {/* Show loader while data is being fetched */}
+      </LayOut>
+    );
+  }
+
+  return (
+    <LayOut>
+      {product ? (
+        <ProductCard product={product} 
+        flex = {true}
+        renderDesc = {true}
+        renderAdd={true}
+        
+        /> 
+        /* Render the product details using ProductCard */
+      ) : (
+        <p>Product not found</p> // Handle the case when product is not found
+      )}
+    </LayOut>
+  );
+} */
