@@ -1,22 +1,21 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import classes from './Header.module.css';  // Fixed import
+import classes from "./Header.module.css"; // Fixed import
 import LowerHeader from "./LowerHeader";
 import { DataContext } from "../DataProvider/DataProvider";
+import { IoIosSearch } from "react-icons/io";
+import { auth } from "../../Utility/firebase";
 
 function Header() {
-
-   const [{basket}, dispatch] = useContext(DataContext)
-   const totalItem = basket?.reduce((amount,item) => {
-
-      return item.amount + amount
-   }, 0)
+   const [{ user, basket }, dispatch] = useContext(DataContext);
+   const totalItem = basket?.reduce((amount, item) => {
+      return item.amount + amount;
+   }, 0);
    console.log(basket.length);
-   
+
    return (
       <section className={classes.fixed}>
          <section>
@@ -49,7 +48,7 @@ function Header() {
                      <option value="">All</option>
                   </select>
                   <input type="text" placeholder="Search products" />
-                  <SearchIcon />
+                  <IoIosSearch size={38} />
                </div>
 
                {/* Right section */}
@@ -65,9 +64,26 @@ function Header() {
                   </Link>
 
                   {/* Account, order, and cart section */}
-                  <Link to="auth">
-                     <p>Sign In</p>
-                     <span>Account & Lists</span>
+                  <Link to={!user && "/auth"}>
+                     {/* direct user to sign in if not signed in */}
+                     <div>
+                        {user ? (
+                           <>
+                           {/* option for user to sign-out, if signed-in */}
+
+                              <p>Hello {user?.email?.split("@")[0]} </p>
+                              <span onClick={()=>auth.signOut()}>Sign Out</span>
+                              {/* to call firebase signout method when 'Sign Out' is cliked, state also need to be updted on App.jsx for the logout to work  App.jsx on inital render checks if user is signed in  */}
+                           </>
+                        ) : (
+                           <>
+                           {/* for user who wants to sign-in */}
+
+                              <p>Hello, Sign In</p>
+                              <span>Account & Lists</span>
+                           </>
+                        )}
+                     </div>
                   </Link>
 
                   <Link to="/orders">
@@ -84,7 +100,6 @@ function Header() {
             </div>
          </section>
          <LowerHeader />
-         
       </section>
    );
 }
