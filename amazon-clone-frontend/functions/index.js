@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
    });
 });
 
-//configure payment processing
+//configure payment processing, server side
 
 app.post("/payment/create", async (req, res) => {
    const total = req.query.total;

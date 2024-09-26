@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
 import classes from "./SignUp.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { auth } from "../../Utility/firebase";
 import {
    signInWithEmailAndPassword,
@@ -21,6 +21,7 @@ function Auth() {
       signUp: false,
    });
    const navigate = useNavigate()
+   const navStateData = useLocation()
   //  console.log(user);
 
    //console.log(password, email);
@@ -42,14 +43,14 @@ function Auth() {
                   user: userInfo.user,
                });
                setLoading({ ...loading, signIn: false }); //stop page laoding/spining after sucessfull login
-               navigate("/") //page navigates to home page after sucessfull login
+               navigate(navStateData?.state?.redirect || "/") //page navigates to payment after user login and if user started to navigate to payment before sign in, otherwise will navigate to home page after sucessfull login
             })
             .catch((err) => {
                setError(err.message);
                setLoading({ ...loading, signIn: false }); //stop loading sing-in page if err
             });
       } else {
-         setLoading({ ...loading, signUp: true });
+         setLoading({ ...loading, signIn: true });
          createUserWithEmailAndPassword(auth, email, password)
             .then((userInfo) => {
                //console.log(userInfo);
@@ -58,7 +59,7 @@ function Auth() {
                   user: userInfo.user,
                });
                setLoading({ ...loading, signUp: false });
-               navigate("/");//page navigates to home after user sign-up
+              navigate(navStateData?.state?.redirect || "/");//page navigates to home after user sign-up
             })
             .catch((err) => {
                setError(err.message);
@@ -71,7 +72,7 @@ function Auth() {
       <section className={classes.login}>
          {/* logo */}
          {/* navigate to homepage when the logo is clicked */}
-         <Link to={"/"} > 
+         <Link to={"/"}>
             <img
                src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg"
                alt=""
@@ -82,6 +83,19 @@ function Auth() {
 
          <div className={classes.login_container}>
             <h1>Sign In</h1>
+
+            {navStateData?.state?.msg && (
+               <small
+                  style={{
+                     padding: "5px",
+                     textAlign: "center",
+                     color: "red",
+                     fontWeight: "bold",
+                  }}
+               >
+                  {navStateData?.state?.msg} {/* Display the message */}
+               </small>
+            )}
 
             <form action="">
                <div>

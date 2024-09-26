@@ -45,13 +45,12 @@ function Cart() {
                {basket?.length === 0 ? (
                   <p>Opps ! Your cart is empty</p>
                ) : (
-                  basket?.map((item, i) => {
+                  basket?.map((item, id) => {
                      //console.log(item);
 
                      return (
-                        <section className={classes.cart_product}>
+                        <section key={item.id} className={classes.cart_product}>
                            <ProductCard
-                              key={i}
                               product={item}
                               renderDesc={true}
                               renderAdd={false}
@@ -70,7 +69,6 @@ function Cart() {
                                  onClick={() => decrement(item.id)}
                               >
                                  <IoIosArrowDown size={18} />
-                                 
                               </button>
                            </div>
                         </section>
