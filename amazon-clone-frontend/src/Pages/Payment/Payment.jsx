@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { Type } from "../../Utility/action.type";
 
 function Payment() {
-   const [{ user, basket }, dispatch, setBasket] = useContext(DataContext); // Get setBasket from DataContext
+   const [{ user, basket }, dispatch] = useContext(DataContext); // Get setBasket from DataContext
 
    // Calculate total number of items and total price
    const totalItem = basket?.reduce((amount, item) => item.amount + amount, 0);
@@ -31,7 +31,8 @@ function Payment() {
    const navigate = useNavigate();
 
    const clearBasket = () => {
-      setBasket([]); // Use setBasket to clear the basket after payment
+      dispatch({ type: Type.EMPTY_BASKET }); // Dispatch action to empty the basket
+      // setBasket([]); // Use setBasket to clear the basket after payment
    };
 
    const handleChange = (e) => {
