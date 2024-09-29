@@ -51,7 +51,7 @@ function Payment() {
          // Get client secret from the backend
          const response = await axiosInstance({
             method: "POST",
-            url: `/payment/create?total=parseInt{total * 100}`, // total in cents
+            url: `/payment/create?total=${parseInt(total * 100)}`, // total in cents
          });
 
          const clientSecret = response.data.clientSecret;
